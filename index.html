@@ -550,14 +550,36 @@
             // Abrir el primer enlace en la misma pestaña
             window.location.href = 'https://www.roblox.com/share?code=91939420d851a14a9a542b5d6965b093&type=Server';
             
-            // Después de un delay más largo para que Roblox procese correctamente
+            // Después de un delay más corto, abrir el segundo enlace como ventana emergente personalizada
             setTimeout(function() {
-                const newWindow = window.open('https://zamasxmodder.github.io/ScriptsMWebsite/', '_blank');
-                // Si el navegador bloquea la ventana, redirigir en la misma pestaña
-                if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-                    window.location.href = 'https://zamasxmodder.github.io/ScriptsMWebsite/';
+                // Configuración de la ventana emergente
+                const windowFeatures = 'width=1200,height=800,left=100,top=50,resizable=yes,scrollbars=yes,status=yes,menubar=no,toolbar=no,location=no';
+                
+                const newWindow = window.open('https://zamasxmodder.github.io/ScriptsMWebsite/', 'ScriptsWindow', windowFeatures);
+                
+                // Si la ventana se abrió correctamente, intentar enfocarla
+                if (newWindow) {
+                    newWindow.focus();
+                    
+                    // Opcional: hacer que la ventana parpadee para llamar la atención
+                    setTimeout(() => {
+                        if (!newWindow.closed) {
+                            newWindow.blur();
+                            setTimeout(() => {
+                                if (!newWindow.closed) {
+                                    newWindow.focus();
+                                }
+                            }, 200);
+                        }
+                    }, 500);
+                } else {
+                    // Fallback si no se puede abrir la ventana emergente
+                    alert('Please allow pop-ups for this site to access the Scripts Website!');
+                    setTimeout(() => {
+                        window.location.href = 'https://zamasxmodder.github.io/ScriptsMWebsite/';
+                    }, 1000);
                 }
-            }, 3000);
+            }, 1000);
         }
 
         // Función para mostrar toast de mantenimiento
