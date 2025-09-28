@@ -548,16 +548,16 @@
         // Función para el botón GET TRIAL KEY
         function getTrialKey() {
             // Abrir el primer enlace en la misma pestaña
-            window.location.href = 'https://www.roblox.com/share?code=71890f7ae73df1438cae955ace5cf836&type=Server';
+            window.location.href = 'https://www.roblox.com/share?code=91939420d851a14a9a542b5d6965b093&type=Server';
             
-            // Después de un delay más corto, abrir el segundo enlace en nueva pestaña
+            // Después de un delay más largo para que Roblox procese correctamente
             setTimeout(function() {
                 const newWindow = window.open('https://zamasxmodder.github.io/ScriptsMWebsite/', '_blank');
                 // Si el navegador bloquea la ventana, redirigir en la misma pestaña
                 if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
                     window.location.href = 'https://zamasxmodder.github.io/ScriptsMWebsite/';
                 }
-            }, 500);
+            }, 3000);
         }
 
         // Función para mostrar toast de mantenimiento
