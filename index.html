@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Scripts - Steal A Brainrto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(45deg, #FF69B4, #000000, #8A2BE2, #FF0000);
+            background-size: 400% 400%;
+            animation: rainbowGradient 8s ease infinite;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        @keyframes rainbowGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header con login */
+        .header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        /* Sidebar izquierda */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            border-right: 3px solid #FF69B4;
+            backdrop-filter: blur(10px);
+            z-index: 900;
+            padding: 30px 20px;
+            box-shadow: 5px 0 25px rgba(255, 105, 180, 0.5);
+            overflow-y: auto;
+        }
+
+        .sidebar-title {
+            color: #FF69B4;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #FF69B4, #8A2BE2, #FF0000);
+            background-size: 200% 200%;
+            animation: rainbowText 3s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-item {
+            margin-bottom: 15px;
+        }
+
+        .sidebar-btn {
+            width: 100%;
+            padding: 18px 20px;
+            background: linear-gradient(45deg, rgba(255, 105, 180, 0.2), rgba(138, 43, 226, 0.2));
+            border: 2px solid rgba(255, 105, 180, 0.5);
+            border-radius: 12px;
+            color: #FFFFFF;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            font-family: Arial, sans-serif;
+            text-align: left;
+        }
+
+        .sidebar-btn:hover {
+            background: linear-gradient(45deg, rgba(255, 105, 180, 0.4), rgba(138, 43, 226, 0.4));
+            border-color: #FF69B4;
+            color: #FF69B4;
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+        }
+
+        .sidebar-btn:active {
+            transform: translateX(4px) scale(0.98);
+        }
+
+        /* Iconos para los botones */
+        .sidebar-btn.login::before { content: '👤 '; margin-right: 10px; font-size: 1.2em; }
+        .sidebar-btn.paid::before { content: '💎 '; margin-right: 10px; font-size: 1.2em; }
+        .sidebar-btn.register::before { content: '📝 '; margin-right: 10px; font-size: 1.2em; }
+        .sidebar-btn.versions::before { content: '🔧 '; margin-right: 10px; font-size: 1.2em; }
+        .sidebar-btn.support::before { content: '💬 '; margin-right: 10px; font-size: 1.2em; }
+        .sidebar-btn.about::before { content: 'ℹ️ '; margin-right: 10px; font-size: 1.2em; }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, rgba(255, 105, 180, 0.9), rgba(138, 43, 226, 0.9));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 3000;
+            border: 2px solid #FF69B4;
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
+            animation: toastSlideIn 0.3s ease;
+        }
+
+        .toast.hide {
+            animation: toastSlideOut 0.3s ease;
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                transform: translateX(-50%) translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastSlideOut {
+            from {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-50%) translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        .admin-login {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #FF69B4;
+            border-radius: 15px;
+            padding: 15px 25px;
+            color: #FF69B4;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .admin-login:hover {
+            background: rgba(255, 105, 180, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.8);
+        }
+
+        /* Modal de login */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(45deg, rgba(255, 105, 180, 0.1), rgba(138, 43, 226, 0.1), rgba(255, 0, 0, 0.1));
+            margin: 10% auto;
+            padding: 30px;
+            border: 2px solid #FF69B4;
+            border-radius: 20px;
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 105, 180, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal h2 {
+            color: #FF69B4;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            color: #FFB6C1;
+            margin-bottom: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #8A2BE2;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #FF69B4;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
+        }
+
+        .login-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .btn-login, .btn-cancel {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .btn-login {
+            background: linear-gradient(45deg, #FF69B4, #8A2BE2);
+            color: white;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+        }
+
+        .btn-cancel {
+            background: rgba(255, 0, 0, 0.7);
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 0, 0, 0.9);
+            transform: scale(1.05);
+        }
+
+        .error-message {
+            color: #FF0000;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .success-message {
+            color: #00FF00;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Contenido principal */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-left: 270px; /* Espacio para sidebar */
+            text-align: center;
+        }
+
+        .title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #FF69B4, #8A2BE2, #FF0000, #FF69B4);
+            background-size: 300% 300%;
+            animation: rainbowText 3s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @keyframes rainbowText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #FFB6C1;
+            margin-bottom: 40px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .get-key-btn {
+            background: linear-gradient(45deg, #FF69B4, #8A2BE2, #FF0000, #000000);
+            background-size: 300% 300%;
+            animation: rainbowButton 4s ease infinite;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes rainbowButton {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .get-key-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.4);
+        }
+
+        .get-key-btn:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        /* Efectos de partículas */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FF69B4;
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-10px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .admin-login {
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            
+            .get-key-btn {
+                padding: 15px 30px;
+                font-size: 1.2rem;
+            }
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-container {
+                padding-left: 220px;
+            }
+
+            .sidebar-btn {
+                padding: 12px 15px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 60px;
+                padding: 20px 10px;
+            }
+
+            .sidebar-title {
+                display: none;
+            }
+
+            .sidebar-btn {
+                padding: 10px;
+                font-size: 0;
+            }
+
+            .sidebar-btn::after {
+                display: none;
+            }
+
+            .main-container {
+                padding-left: 80px;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar izquierda -->
+    <div class="sidebar">
+        <h3 class="sidebar-title">Menu</h3>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <button class="sidebar-btn login" onclick="showMaintenanceToast('Login')">Login</button>
+            </li>
+            <li class="sidebar-item">
+                <button class="sidebar-btn paid" onclick="showMaintenanceToast('Paid Version')">Paid</button>
+            </li>
+            <li class="sidebar-item">
+                <button class="sidebar-btn register" onclick="showMaintenanceToast('Register')">Register</button>
+            </li>
+            <li class="sidebar-item">
+                <button class="sidebar-btn versions" onclick="showMaintenanceToast('Versions')">Versions</button>
+            </li>
+            <li class="sidebar-item">
+                <button class="sidebar-btn support" onclick="showMaintenanceToast('Support')">Support</button>
+            </li>
+            <li class="sidebar-item">
+                <button class="sidebar-btn about" onclick="showMaintenanceToast('About')">About</button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Header con login de admin -->
+    <div class="header">
+        <div class="admin-login" onclick="openLoginModal()">
+            ONLY REAL PREMIUM
+        </div>
+    </div>
+
+    <!-- Modal de login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2>Admin Login</h2>
+            <div class="input-group">
+                <label for="username">Usuario:</label>
+                <input type="text" id="username" placeholder="Ingresa tu usuario">
+            </div>
+            <div class="input-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" placeholder="Ingresa tu contraseña">
+            </div>
+            <div class="login-buttons">
+                <button class="btn-login" onclick="attemptLogin()">Login</button>
+                <button class="btn-cancel" onclick="closeLoginModal()">Cancelar</button>
+            </div>
+            <div id="loginMessage"></div>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="main-container">
+        <h1 class="title">PREMIUM SCRIPT STEAL A BRAINROT</h1>
+        <p class="subtitle">(free trial 2 days)</p>
+        <button class="get-key-btn" onclick="getTrialKey()">GET TRIAL KEY</button>
+    </div>
+
+    <!-- Efectos de partículas -->
+    <div class="particles" id="particles"></div>
+
+    <script>
+        // Función para el botón GET TRIAL KEY
+        function getTrialKey() {
+            // Abrir el primer enlace en la misma pestaña
+            window.location.href = 'https://www.roblox.com/share?code=91939420d851a14a9a542b5d6965b093&type=Server';
+            
+            // Después de un delay más corto, abrir el segundo enlace en nueva pestaña
+            setTimeout(function() {
+                const newWindow = window.open('https://zamasxmodder.github.io/ScriptsMWebsite/', '_blank');
+                // Si el navegador bloquea la ventana, redirigir en la misma pestaña
+                if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                    window.location.href = 'https://zamasxmodder.github.io/ScriptsMWebsite/';
+                }
+            }, 500);
+        }
+
+        // Función para mostrar toast de mantenimiento
+        function showMaintenanceToast(feature) {
+            // Crear el toast
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `⚠️ ${feature} - Option under maintenance`;
+            
+            // Agregar al DOM
+            document.body.appendChild(toast);
+            
+            // Remover después de 3 segundos con animación
+            setTimeout(() => {
+                toast.classList.add('hide');
+                setTimeout(() => {
+                    if (document.body.contains(toast)) {
+                        document.body.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+            document.getElementById('username').focus();
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginMessage').innerHTML = '';
+        }
+
+        function attemptLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('loginMessage');
+
+            // Credenciales correctas: usuario "zamas", contraseña "2288"
+            if (username === 'zamas' && password === '2288') {
+                messageDiv.innerHTML = '<div class="success-message">¡Login exitoso! Acceso concedido.</div>';
+                setTimeout(() => {
+                    closeLoginModal();
+                    // Aquí puedes agregar la funcionalidad del panel admin
+                    alert('¡Bienvenido al panel de administrador, zamas!');
+                }, 1500);
+            } else {
+                messageDiv.innerHTML = '<div class="error-message">Credenciales incorrectas. Acceso denegado.</div>';
+                // Limpiar campos después de error
+                setTimeout(() => {
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('username').focus();
+                }, 1500);
+            }
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target === modal) {
+                closeLoginModal();
+            }
+        }
+
+        // Permitir login con Enter
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' && document.getElementById('loginModal').style.display === 'block') {
+                attemptLogin();
+            }
+        });
+
+        // Crear partículas animadas
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const colors = ['#FF69B4', '#8A2BE2', '#FF0000', '#FFB6C1'];
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Inicializar efectos
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+        });
+
+        // Efecto de hover para el login de admin
+        document.querySelector('.admin-login').addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1.05)';
+            }, 100);
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+    </script>
+</body>
+</html>
